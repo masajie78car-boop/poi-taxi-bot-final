@@ -153,14 +153,25 @@
       const password = document.getElementById("password").value;
 
       signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          alert("Login berhasil!");
-          window.location.href = "panel_admin.html";
-        })
-        .catch((error) => {
-          alert("Login gagal: " + error.message);
-        });
-    });
+  .then(() => {
+    alert("Login berhasil!");
+
+    // 🔀 Logika redirect berdasarkan email admin
+    if (email === "wijayaselalu8@gmail.com") {
+      // Admin Stasiun Jatinegara
+      window.location.href = "panel_admin_jatinegara.html";
+    } else if (email === "masajie78car@gmail.com") {
+      // Admin Mall Nusantara
+      window.location.href = "panel_admin.html";
+    } else {
+      // Jika admin lain ditambahkan nanti
+      window.location.href = "panel_default.html";
+    }
+  })
+  .catch((error) => {
+    alert("Login gagal: " + error.message);
+  });
+
   </script>
 </body>
 </html>
