@@ -1,176 +1,81 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel Admin - Mall Nusantara</title>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Panel Admin - POI Taxi (Multi Lokasi)</title>
   <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: #f5f7fb;
-      color: #333;
-    }
-
-    header {
-      background: #007bff;
-      color: white;
-      padding: 16px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    .logout-section {
-  text-align: center;
-  margin-top: 30px;
-  padding: 20px 0;
-}
-
-.logout {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: 0.3s;
-}
-
-.logout:hover {
-  background: #b02a37;
-  transform: scale(1.05);
-}
-
-    main {
-      max-width: 960px;
-      margin: 24px auto;
-      padding: 16px;
-    }
-
-    .section {
-      background: #fff;
-      padding: 16px;
-      border-radius: 10px;
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
-      margin-bottom: 24px;
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #007bff;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th, td {
-      padding: 8px;
-      border: 1px solid #e5e8ee;
-      text-align: center;
-    }
-
-    th {
-      background: #f1f5fb;
-      color: #444;
-    }
-
-    button.action {
-      padding: 6px 10px;
-      border: none;
-      border-radius: 6px;
-      color: white;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .btn-selesai {
-      background: #28a745;
-    }
-
-    .btn-naik {
-      background: #17a2b8;
-    }
-
-    .empty {
-      color: #888;
-      font-style: italic;
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 18px;
-      }
-      .logout {
-        padding: 6px 10px;
-        font-size: 13px;
-      }
-      th, td {
-        font-size: 13px;
-      }
+    :root{--bg:#f2f6fb;--card:#fff;--accent:#007bff}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;background:var(--bg);color:#222}
+    .container{max-width:1100px;margin:18px auto;padding:12px}
+    header{display:flex;align-items:center;justify-content:space-between;background:var(--accent);color:#fff;padding:14px;border-radius:10px}
+    header h1{margin:0;font-size:18px}
+    .logout{background:#e74c3c;border:none;color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .top-row{display:flex;gap:12px;align-items:center;margin-top:12px;flex-wrap:wrap}
+    .select-loc{padding:8px;border-radius:8px;border:1px solid #dde6f2;background:#fff}
+    .card{background:var(--card);padding:12px;border-radius:10px;box-shadow:0 4px 18px rgba(10,10,10,0.06);margin-top:12px}
+    .stats{display:flex;gap:12px;flex-wrap:wrap}
+    .stat{flex:1;min-width:140px;padding:12px;border-radius:8px;background:#fff;text-align:center}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px;border:1px solid #e7eef8;text-align:center;font-size:14px}
+    th{background:#f4f9ff}
+    .btn{padding:6px 8px;border-radius:8px;border:none;cursor:pointer}
+    .btn-aktif{background:#28a745;color:#fff}
+    .btn-naik{background:#17a2b8;color:#fff}
+    .btn-hapus{background:#dc3545;color:#fff}
+    @media(max-width:800px){
+      header h1{font-size:16px}
+      th,td{font-size:12px;padding:6px}
+      .stat{padding:10px}
     }
   </style>
 </head>
 <body>
-  <div class="logout-section">
-  <button class="logout" onclick="logout()">Logout</button>
-</div>
+  <div class="container">
+    <header>
+      <h1>🏢 ANTRIAN - POI Taxi (Multi Lokasi)</h1>
+      <button class="logout" onclick="logout()">🚪 Logout</button>
+    </header>
 
-  <main>
-    <div class="section">
-      <h2>Antrian Aktif (Lobby)</h2>
-      <table id="tableAktif">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>No Polisi</th>
-            <th>No Lambung</th>
-            <th>Status</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td colspan="5" class="empty">Memuat data...</td></tr>
-        </tbody>
-      </table>
+    <div class="top-row">
+      <label for="lokasi">Pilih Lokasi:</label>
+      <select id="lokasi" class="select-loc">
+        <option value="mall_nusantara">Mall Nusantara</option>
+        <option value="mall_asia">Mall Asia</option>
+        <option value="stasiun_duren">Stasiun Duren</option>
+      </select>
     </div>
 
-    <div class="section">
-      <h2>Buffer (Menunggu)</h2>
-      <table id="tableBuffer">
-        <thead>
-          <tr>
-            <th>No</th>
-            <th>No Polisi</th>
-            <th>No Lambung</th>
-            <th>Status</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td colspan="5" class="empty">Memuat data...</td></tr>
-        </tbody>
-      </table>
+    <div class="card">
+      <div class="stats">
+        <div class="stat"><div id="totalAktif">0</div><div>Total Aktif (Lobby)</div></div>
+        <div class="stat"><div id="totalBuffer">0</div><div>Buffer (Menunggu)</div></div>
+        <div class="stat"><div id="avgWait">-</div><div>Rata-rata Tunggu</div></div>
+      </div>
+
+      <h3 style="margin-top:12px">🚖 Lobby (Aktif)</h3>
+      <div style="overflow:auto">
+        <table>
+          <thead><tr><th>No</th><th>No Polisi</th><th>No Lambung</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody id="tabelAktif"><tr><td colspan="5">Memuat...</td></tr></tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top:18px">🕒 Buffer (Menunggu)</h3>
+      <div style="overflow:auto">
+        <table>
+          <thead><tr><th>No</th><th>No Polisi</th><th>No Lambung</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody id="tabelBuffer"><tr><td colspan="5">Memuat...</td></tr></tbody>
+        </table>
+      </div>
     </div>
-  </main>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
     import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-    // ==== Konfigurasi Firebase ====
     const firebaseConfig = {
       apiKey: "AIzaSyArjIuAyCRw85LStoiJzgIdLyhs8HXPFhs",
       authDomain: "poi-taxi.firebaseapp.com",
@@ -180,75 +85,107 @@
       messagingSenderId: "774582687333",
       appId: "1:774582687333:web:ee95e1e3e705beaee4d88c"
     };
-
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getDatabase(app);
 
-    const lokasi = "mall_nusantara"; // hanya mall ini yang ditampilkan
-
-    // 🔒 Cek login
     onAuthStateChanged(auth, (user) => {
       if (!user) window.location.href = "login.html";
     });
 
-    // Tombol logout
+    const lokasiSelect = document.getElementById("lokasi");
+    const tabelAktif = document.getElementById("tabelAktif");
+    const tabelBuffer = document.getElementById("tabelBuffer");
+    const totalAktif = document.getElementById("totalAktif");
+    const totalBuffer = document.getElementById("totalBuffer");
+    const avgWait = document.getElementById("avgWait");
+
+    const WHATSAPP_TOKEN = "EAAUzJvcgTvwBP4MgkCHstWa8iZB8AyxgyAjUIEdVtAbLKWx3BP3ik5wBofGaO3YGWZC0Uqo9O4KngKfwblY4WYosMih2513mkn82mir8OZAXeCX8T1npg3tDiZAIFunhkY9SGekZCtZCAN29zE2dRne808pl3l2O85xGarHvVgbZCv3TMtNCuX55ADgKAxbAgZDZD";
+    const PHONE_NUMBER_ID = "905097019346311";
+
+    function kirimPesan(nomor, teks) {
+      return fetch(`https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${WHATSAPP_TOKEN}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ messaging_product: "whatsapp", to: nomor, text: { body: teks } })
+      });
+    }
+
+    function loadData(lokasi) {
+      const db = getDatabase();
+      const antrianRef = ref(db, `pangkalan/${lokasi}/antrian`);
+      onValue(antrianRef, (snap) => {
+        const data = snap.val() || {};
+        const arr = Object.entries(data).sort((a,b)=> new Date(a[1].createdAt)-new Date(b[1].createdAt));
+        const aktif = arr.filter(([_,v])=> v.status === "aktif");
+        const buffer = arr.filter(([_,v])=> v.status === "buffer");
+
+        // stats
+        totalAktif.textContent = aktif.length;
+        totalBuffer.textContent = buffer.length;
+        if (arr.length===0) avgWait.textContent = "-"; else {
+          const totalMs = arr.reduce((s,[,v])=> s + (Date.now() - new Date(v.createdAt).getTime()), 0);
+          avgWait.textContent = Math.round((totalMs/arr.length)/60000) + " menit";
+        }
+
+        // render aktif
+        tabelAktif.innerHTML = "";
+        aktif.forEach(([key,v],i)=>{
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${i+1}</td><td>${v.noPolisi}</td><td>${v.noLambung}</td><td>${v.status}</td><td>
+            <button class="btn btn-aktif" data-id="${key}">✅ Selesai</button></td>`;
+          tabelAktif.appendChild(tr);
+        });
+        if (aktif.length===0) tabelAktif.innerHTML = "<tr><td colspan='5'>Tidak ada aktif</td></tr>";
+
+        // render buffer
+        tabelBuffer.innerHTML = "";
+        buffer.forEach(([key,v],i)=>{
+          const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${aktif.length + i + 1}</td><td>${v.noPolisi}</td><td>${v.noLambung}</td><td>${v.status}</td><td>
+            <button class="btn btn-naik" data-id="${key}">⬆️ Naik ke Lobby</button></td>`;
+          tabelBuffer.appendChild(tr);
+        });
+        if (buffer.length===0) tabelBuffer.innerHTML = "<tr><td colspan='5'>Tidak ada buffer</td></tr>";
+
+        // attach buttons
+        document.querySelectorAll(".btn-aktif").forEach(b=> b.addEventListener("click", async (e)=>{
+          const id = e.target.getAttribute("data-id");
+          // remove aktif
+          await remove(ref(getDatabase(), `pangkalan/${lokasi}/antrian/${id}`));
+          // promote first buffer if exists
+          if (buffer.length>0) {
+            const [firstKey, firstData] = buffer[0];
+            await update(ref(getDatabase(), `pangkalan/${lokasi}/antrian/${firstKey}`), { status: "aktif" });
+            // notify driver
+            if (firstData.nomor) {
+              await kirimPesan(firstData.nomor, `🚕 ${firstData.noPolisi} | ${firstData.noLambung}\nSilakan masuk Lobby ${lokasi.replace(/_/g,' ')}.\nGiliran Anda berikutnya.`);
+            }
+          }
+        }));
+
+        document.querySelectorAll(".btn-naik").forEach(b=> b.addEventListener("click", async (e)=>{
+          const id = e.target.getAttribute("data-id");
+          const data = buffer.find(([k])=> k===id)[1];
+          await update(ref(getDatabase(), `pangkalan/${lokasi}/antrian/${id}`), { status: "aktif" });
+          if (data && data.nomor) {
+            await kirimPesan(data.nomor, `🚕 ${data.noPolisi} | ${data.noLambung}\nSilakan masuk Lobby ${lokasi.replace(/_/g,' ')}.\nGiliran Anda berikutnya.`);
+          }
+        }));
+      });
+    }
+
+    // init
+    loadData(lokasiSelect.value);
+    lokasiSelect.addEventListener("change", ()=> loadData(lokasiSelect.value));
+
     window.logout = async function() {
-      await signOut(auth);
-      window.location.href = "login.html";
+      try {
+        await signOut(auth);
+        window.location.href = "login.html";
+      } catch(e) {
+        alert("Logout gagal: "+ e);
+      }
     };
-
-    const aktifTable = document.querySelector("#tableAktif tbody");
-    const bufferTable = document.querySelector("#tableBuffer tbody");
-
-    // 🔁 Update realtime antrian
-    onValue(ref(db, `pangkalan/${lokasi}/antrian`), (snap) => {
-      const data = snap.val() || {};
-      const arr = Object.values(data);
-      const aktif = arr.filter(d => d.status === "aktif").sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
-      const buffer = arr.filter(d => d.status === "buffer").sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
-
-      // render tabel aktif
-      aktifTable.innerHTML = aktif.length ? "" : "<tr><td colspan='5' class='empty'>Belum ada antrian aktif</td></tr>";
-      aktif.forEach((d, i) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${i + 1}</td>
-          <td>${d.noPolisi}</td>
-          <td>${d.noLambung}</td>
-          <td>${d.status}</td>
-          <td><button class="action btn-selesai" data-id="${d.noPolisi}">Selesai</button></td>`;
-        aktifTable.appendChild(tr);
-      });
-
-      // render tabel buffer
-      bufferTable.innerHTML = buffer.length ? "" : "<tr><td colspan='5' class='empty'>Belum ada buffer</td></tr>";
-      buffer.forEach((d, i) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${i + 1}</td>
-          <td>${d.noPolisi}</td>
-          <td>${d.noLambung}</td>
-          <td>${d.status}</td>
-          <td><button class="action btn-naik" data-id="${d.noPolisi}">Naik ke Lobby</button></td>`;
-        bufferTable.appendChild(tr);
-      });
-
-      // tombol aksi
-      document.querySelectorAll(".btn-selesai").forEach(btn =>
-        btn.addEventListener("click", async e => {
-          const id = e.target.dataset.id;
-          await remove(ref(db, `pangkalan/${lokasi}/antrian/${id}`));
-        })
-      );
-
-      document.querySelectorAll(".btn-naik").forEach(btn =>
-        btn.addEventListener("click", async e => {
-          const id = e.target.dataset.id;
-          await update(ref(db, `pangkalan/${lokasi}/antrian/${id}`), { status: "aktif" });
-        })
-      );
-    });
   </script>
 </body>
 </html>
