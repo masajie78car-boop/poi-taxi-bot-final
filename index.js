@@ -20,7 +20,7 @@
 
     /* ==== BACKGROUND ==== */
     body {
-      background: url("https://drive.google.com/file/d/1a0j2wb4LPixLzw3IWnMQc2h-SVEvq0Y-/view?usp=drivesdk") ") 
+      background: url("https://ibb.co.com/ksTTncwd") 
         no-repeat center center/cover;
       display: flex;
       justify-content: center;
