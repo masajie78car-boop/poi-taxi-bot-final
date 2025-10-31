@@ -20,7 +20,7 @@
 
     /* ==== BACKGROUND ==== */
     body {
-      background: url("https://ibb.co.com/ksTTncwd") 
+      background: url("https://github.com/masajie78car-boop/background-") 
         no-repeat center center/cover;
       display: flex;
       justify-content: center;
