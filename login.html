@@ -1,102 +1,64 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login Admin</title>
-<style>
-body {
-  margin:0;
-  padding:0;
-  font-family:"Poppins",sans-serif;
-  background: url("https://raw.githubusercontent.com/masajie78car-boop/background-/main/bg-picsay%20(1)-picsay.png") no-repeat center center fixed;
-  background-size: cover;
-  height:100vh;
-  overflow:hidden;
-  position:relative;
-}
-.login-button {
-  position:absolute;
-  bottom:80px;
-  left:50%;
-  transform:translateX(-50%);
-  background-color: rgba(0,123,255,0.95);
-  color:white;
-  border:none;
-  font-size:1.2em;
-  padding:16px 50px;
-  border-radius:40px;
-  cursor:pointer;
-  box-shadow:0 4px 10px rgba(0,0,0,0.3);
-  transition: all 0.3s ease;
-  animation:pulse 2s infinite;
-}
-.login-button:hover { background-color:#0056b3; transform: translateX(-50%) scale(1.05); }
-.login-box {
-  display:none;
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%);
-  background: rgba(255,255,255,0.95);
-  padding:30px;
-  border-radius:20px;
-  text-align:center;
-  width:320px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.3);
-}
-input {
-  width:90%;
-  padding:10px;
-  margin:10px 0;
-  border:1px solid #ccc;
-  border-radius:8px;
-  font-size:1em;
-}
-button { width:100%; padding:10px; background-color:#007bff; border:none; border-radius:8px; color:white; font-size:1em; cursor:pointer;}
-button:hover { background-color:#0056b3;}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login Admin - POI Taxi</title>
+  <style>
+    :root{--bg:#f5f7fb;--card:#fff;--accent:#007bff}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:var(--bg)}
+    .card{background:var(--card);padding:28px;border-radius:12px;box-shadow:0 6px 22px rgba(10,10,10,0.08);width:380px;max-width:92%}
+    h1{margin:0 0 12px;font-size:20px;color:#222}
+    input{width:100%;padding:10px 12px;margin:8px 0;border-radius:8px;border:1px solid #e6e9ef;font-size:14px}
+    button{width:100%;padding:10px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-size:15px;cursor:pointer;margin-top:10px}
+    .note{font-size:13px;color:#666;margin-top:8px}
+    .error{color:#b02a37;font-size:13px;margin-top:8px}
+    @media(min-width:900px){.card{width:380px}}
+  </style>
 </head>
 <body>
-<button class="login-button" id="openLogin">LOGIN</button>
-<div class="login-box" id="loginBox">
-<h2>🔐 Login Admin</h2>
-<input type="email" id="email" placeholder="Email" value="masajie78car@gmail.com"/>
-<input type="password" id="password" placeholder="Password"/>
-<button id="loginBtn">Masuk</button>
-</div>
-<script type="module">
-const openLogin=document.getElementById("openLogin");
-const loginBox=document.getElementById("loginBox");
-openLogin.addEventListener("click",()=>{openLogin.style.display="none";loginBox.style.display="block";});
+  <div class="card">
+    <h1>Login Admin POI Taxi</h1>
+    <input id="email" type="email" placeholder="Email admin" autocomplete="username" />
+    <input id="password" type="password" placeholder="Password" autocomplete="current-password" />
+    <button id="loginBtn">Masuk</button>
+    <div class="note">Masuk menggunakan akun yang terdaftar di Firebase Authentication.</div>
+    <div id="err" class="error"></div>
+  </div>
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-const firebaseConfig={
-  apiKey:"AIzaSyArjIuAyCRw85LStoiJzgIdLyhs8HXPFhs",
-  authDomain:"poi-taxi.firebaseapp.com",
-  databaseURL:"https://poi-taxi-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId:"poi-taxi",
-  storageBucket:"poitaxi.firebasestorage.app",
-  messagingSenderId:"774582687333",
-  appId:"1:774582687333:web:ee95e1e3e705beaee4d88c"
-};
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyArjIuAyCRw85LStoiJzgIdLyhs8HXPFhs",
+      authDomain: "poi-taxi.firebaseapp.com",
+      databaseURL: "https://poi-taxi-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "poi-taxi",
+      storageBucket: "poi-taxi.firebasestorage.app",
+      messagingSenderId: "774582687333",
+      appId: "1:774582687333:web:ee95e1e3e705beaee4d88c"
+    };
 
-document.getElementById("loginBtn").addEventListener("click",()=>{
-  const email=document.getElementById("email").value;
-  const password=document.getElementById("password").value;
-  signInWithEmailAndPassword(auth,email,password)
-  .then(()=>{
-    alert("Login berhasil!");
-    if(email==="wijayaselalu8@gmail.com"){ window.location.href="panel_admin_jatinegara.html"; }
-    else if(email==="masajie78car@gmail.com"){ window.location.href="panel_admin.html"; }
-    else{ window.location.href="panel_default.html"; }
-  })
-  .catch((err)=>{ alert("Login gagal: "+err.message); });
-});
-</script>
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) window.location.href = "panel_admin.html";
+    });
+
+    document.getElementById("loginBtn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const err = document.getElementById("err");
+      err.textContent = "";
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        window.location.href = "panel_admin.html";
+      } catch (e) {
+        err.textContent = "Login gagal: " + (e.message || e);
+      }
+    });
+  </script>
 </body>
 </html>
