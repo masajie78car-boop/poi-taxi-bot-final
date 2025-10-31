@@ -34,20 +34,31 @@
 }
 
 .logout {
-  background: #dc3545;
+  position: fixed;                /* selalu nempel di layar bawah */
+  bottom: 40px;                   /* jarak dari tepi bawah layar */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 123, 255, 0.95);
   color: white;
   border: none;
-  padding: 12px 28px;
-  border-radius: 10px;
-  font-size: 16px;
+  font-size: 1.2em;
+  padding: 16px 50px;
+  border-radius: 50px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   transition: 0.3s;
+  animation: pulse 2s infinite;
+  z-index: 999;                   /* biar di atas semua elemen lain */
 }
 
 .logout:hover {
-  background: #b02a37;
-  transform: scale(1.05);
+  background-color: #0056b3;
+  transform: translateX(-50%) scale(1.05);
+}
+    @keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0,123,255,0.6); }
+  70% { box-shadow: 0 0 0 20px rgba(0,123,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(0,123,255,0); }
 }
     .user-info {
   margin-top: 10px;
@@ -55,6 +66,10 @@
   font-size: 0.9em;
   font-style: italic;
 }
+<div class="logout-section">
+  <button class="logout" onclick="logout()">LOGOUT</button>
+  <p id="user-info" class="user-info"></p>
+</div>
 
     main {
       max-width: 960px;
