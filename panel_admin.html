@@ -27,22 +27,28 @@
       font-size: 20px;
     }
 
-    .logout {
-      position: absolute;
-      right: 16px;
-      top: 12px;
-      background: #dc3545;
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
+    .logout-section {
+  text-align: center;
+  margin-top: 30px;
+  padding: 20px 0;
+}
 
-    .logout:hover {
-      background: #a71d2a;
-    }
+.logout {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.logout:hover {
+  background: #b02a37;
+  transform: scale(1.05);
+}
 
     main {
       max-width: 960px;
@@ -117,10 +123,9 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>🚖 Panel Admin - Mall Nusantara</h1>
-    <button class="logout" onclick="logout()">Logout</button>
-  </header>
+  <div class="logout-section">
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
 
   <main>
     <div class="section">
