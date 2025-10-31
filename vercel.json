@@ -1,13 +1,12 @@
 {
   "version": 2,
   "builds": [
-    { "src": "index.js", "use": "@vercel/node" },
     { "src": "login.html", "use": "@vercel/static" },
-    { "src": "panel_admin.html", "use": "@vercel/static" }
+    { "src": "panel_admin.html", "use": "@vercel/static" },
+    { "src": "panel_admin_jatinegara.html", "use": "@vercel/static" },
+    { "src": "index.js", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/login.html", "dest": "/login.html" },
-    { "src": "/panel_admin.html", "dest": "/panel_admin.html" },
-    { "src": "/(.*)", "dest": "/index.js" }
+    { "src": "/(.*)", "dest": "/login.html" }
   ]
 }
