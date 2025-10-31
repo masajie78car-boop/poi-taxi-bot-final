@@ -29,7 +29,7 @@
 
     .logout-section {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 20px;
   padding: 20px 0;
 }
 
@@ -48,6 +48,12 @@
 .logout:hover {
   background: #b02a37;
   transform: scale(1.05);
+}
+    .user-info {
+  margin-top: 10px;
+  color: #555;
+  font-size: 0.9em;
+  font-style: italic;
 }
 
     main {
@@ -128,6 +134,7 @@
       </header>
 <div class="logout-section">
   <button class="logout" onclick="logout()">Logout</button>
+  <p id="user-info" class="user-info"></p>
 </div>
   <main>
     <div class="section">
