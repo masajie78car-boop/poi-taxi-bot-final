@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Panel Admin - Mall Nusantara</title>
+<title>Panel Admin - Stasiun Jatinegara</title>
 <style>
 body {margin:0;font-family:"Poppins",sans-serif;background:#f5f7fb;color:#333;}
-header {background:#007bff;color:white;padding:12px 0;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
-main {max-width:960px;margin:0 auto;padding:16px;}
-.section {background:#fff;padding:16px;border-radius:10px;box-shadow:0 3px 12px rgba(0,0,0,0.05);margin-bottom:12px;}
-h2 {margin:0 0 10px 0;color:#007bff;font-size:18px;}
-table {width:100%;border-collapse:collapse;margin-top:5px;}
-th, td {padding:8px;border:1px solid #e5e8ee;text-align:center;font-size:14px;}
+header {background:#007bff;color:white;padding:16px;text-align:center;box-shadow:0 3px 8px rgba(0,0,0,0.1);}
+main {max-width:960px;margin:24px auto;padding:16px;}
+.section {background:#fff;padding:16px;border-radius:10px;box-shadow:0 3px 12px rgba(0,0,0,0.05);margin-bottom:24px;}
+h2 {margin-top:0;color:#007bff;}
+table {width:100%;border-collapse:collapse;margin-top:10px;}
+th, td {padding:8px;border:1px solid #e5e8ee;text-align:center;}
 th {background:#f1f5fb;color:#444;}
 button.action {padding:6px 10px;border:none;border-radius:6px;color:white;cursor:pointer;font-size:14px;}
 .btn-selesai {background:#28a745;}
-.btn-naik {background:#17a2b8;}
+.btn-setujui {background:#17a2b8;}
 .empty {color:#888;font-style:italic;}
 .logout {
   position: fixed;
@@ -26,7 +26,7 @@ button.action {padding:6px 10px;border:none;border-radius:6px;color:white;cursor
   color:white;
   border:none;
   font-size:1.2em;
-  padding:14px 50px;
+  padding:16px 50px;
   border-radius:50px;
   cursor:pointer;
   box-shadow:0 4px 10px rgba(0,0,0,0.3);
@@ -35,39 +35,37 @@ button.action {padding:6px 10px;border:none;border-radius:6px;color:white;cursor
   z-index:999;
 }
 .logout:hover {background-color:#0056b3;transform:translateX(-50%) scale(1.05);}
-.user-info {text-align:center;color:#555;font-size:0.9em;font-style:italic;margin-top:5px;}
 @keyframes pulse {0%{box-shadow:0 0 0 0 rgba(0,123,255,0.6);}70%{box-shadow:0 0 0 20px rgba(0,123,255,0);}100%{box-shadow:0 0 0 0 rgba(0,123,255,0);}}
-@media (max-width:600px){header h1{font-size:18px;}th,td{font-size:12px;}.logout{bottom:25px;font-size:1rem;padding:10px 40px;}}
+@media(max-width:600px){th,td{font-size:13px;}.logout{font-size:14px;padding:10px 30px;}}
 </style>
 </head>
 <body>
-<header>
-<h1>🚖 Panel Admin - Lippo Mall Nusantara</h1>
-</header>
+<header><h1>🚆 Panel Admin - Stasiun Jatinegara</h1></header>
 <main>
 <div class="section">
-<h2>Antrian Aktif (Lobby Veteran)</h2>
+<h2>🚖 Antrian Parkir Dalam (Aktif)</h2>
+<p><i>Maksimal 6 unit di dalam parkiran</i></p>
 <table id="tableAktif">
 <thead><tr><th>No</th><th>No Polisi</th><th>No Lambung</th><th>Status</th><th>Aksi</th></tr></thead>
 <tbody><tr><td colspan="5" class="empty">Memuat data...</td></tr></tbody>
 </table>
 </div>
 <div class="section">
-<h2>Buffer (Menunggu diluar area)</h2>
+<h2>🕒 Buffer (Menunggu di luar area)</h2>
 <table id="tableBuffer">
 <thead><tr><th>No</th><th>No Polisi</th><th>No Lambung</th><th>Status</th><th>Aksi</th></tr></thead>
-<tbody><tr><td colspan="5" class="empty">Memuat data...</td></tr></tbody>
+<tbody><tr><td colspan="5" class="empty">Belum ada buffer</td></tr></tbody>
 </table>
 </div>
 </main>
 <button class="logout" onclick="logout()">LOGOUT</button>
-<p id="user-info" class="user-info"></p>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-const firebaseConfig = {
+const firebaseConfig={
 apiKey:"AIzaSyArjIuAyCRw85LStoiJzgIdLyhs8HXPFhs",
 authDomain:"poi-taxi.firebaseapp.com",
 databaseURL:"https://poi-taxi-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -77,17 +75,14 @@ messagingSenderId:"774582687333",
 appId:"1:774582687333:web:ee95e1e3e705beaee4d88c"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-const lokasi="mall_nusantara";
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getDatabase(app);
 
-onAuthStateChanged(auth,(user)=>{
-  const userInfo=document.getElementById("user-info");
-  if(!user) window.location.href="login.html";
-  else userInfo.textContent=`Anda login sebagai: ${user.email}`;
-});
+const lokasi="stasiun_jatinegara";
+const maxAktif=6;
 
+onAuthStateChanged(auth,(user)=>{if(!user)window.location.href="login.html";});
 window.logout=async()=>{await signOut(auth);window.location.href="login.html";};
 
 const aktifTable=document.querySelector("#tableAktif tbody");
@@ -96,10 +91,10 @@ const bufferTable=document.querySelector("#tableBuffer tbody");
 onValue(ref(db,`pangkalan/${lokasi}/antrian`),(snap)=>{
   const data=snap.val()||{};
   const arr=Object.values(data);
-  const aktif=arr.filter(d=>d.status==="aktif").sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt));
-  const buffer=arr.filter(d=>d.status==="buffer").sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt));
+  const aktif=arr.filter(d=>d.status==="aktif").slice(0,maxAktif);
+  const buffer=arr.filter(d=>d.status!=="aktif");
 
-  aktifTable.innerHTML=aktif.length?"<tr></tr>":"<tr><td colspan='5' class='empty'>Belum ada antrian aktif</td></tr>";
+  aktifTable.innerHTML=aktif.length?"":"<tr><td colspan='5' class='empty'>Belum ada antrian aktif</td></tr>";
   aktif.forEach((d,i)=>{
     const tr=document.createElement("tr");
     tr.innerHTML=`<td>${i+1}</td><td>${d.noPolisi}</td><td>${d.noLambung}</td><td>${d.status}</td><td><button class="action btn-selesai" data-id="${d.noPolisi}">Selesai</button></td>`;
@@ -109,7 +104,7 @@ onValue(ref(db,`pangkalan/${lokasi}/antrian`),(snap)=>{
   bufferTable.innerHTML=buffer.length?"":"<tr><td colspan='5' class='empty'>Belum ada buffer</td></tr>";
   buffer.forEach((d,i)=>{
     const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${i+1}</td><td>${d.noPolisi}</td><td>${d.noLambung}</td><td>${d.status}</td><td><button class="action btn-naik" data-id="${d.noPolisi}">Naik ke Lobby</button></td>`;
+    tr.innerHTML=`<td>${i+1}</td><td>${d.noPolisi}</td><td>${d.noLambung}</td><td>${d.status}</td><td><button class="action btn-setujui" data-id="${d.noPolisi}">Setujui</button></td>`;
     bufferTable.appendChild(tr);
   });
 
@@ -117,7 +112,8 @@ onValue(ref(db,`pangkalan/${lokasi}/antrian`),(snap)=>{
     const id=e.target.dataset.id;
     await remove(ref(db,`pangkalan/${lokasi}/antrian/${id}`));
   }));
-  document.querySelectorAll(".btn-naik").forEach(btn=>btn.addEventListener("click",async e=>{
+
+  document.querySelectorAll(".btn-setujui").forEach(btn=>btn.addEventListener("click",async e=>{
     const id=e.target.dataset.id;
     await update(ref(db,`pangkalan/${lokasi}/antrian/${id}`),{status:"aktif"});
   }));
