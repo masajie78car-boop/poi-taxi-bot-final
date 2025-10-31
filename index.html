@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>POI TAXI LOGIN</title>
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      height: 100vh;
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end; /* Posisikan di bawah */
+      justify-content: flex-end; /* arah ke bawah */
       align-items: center;
+      flex-direction: column;
       background: url("https://raw.githubusercontent.com/masajie78car-boop/background-/695e2543eb518e542925571ef6128ec5ca98e524/bg-picsay%20(1)-picsay.png") 
-        no-repeat center center/cover;
-      font-family: Arial, sans-serif;
+        no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .login-btn {
-      margin-bottom: 50px;
+      margin-bottom: 40px;
       background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 50px;
-      padding: 15px 50px;
+      border-radius: 40px;
+      padding: 15px 60px;
       font-size: 20px;
       cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
     .login-btn:hover {
@@ -38,9 +43,9 @@
 
     @media (max-width: 600px) {
       .login-btn {
-        padding: 12px 40px;
+        margin-bottom: 25px;
+        padding: 12px 45px;
         font-size: 16px;
-        margin-bottom: 30px;
       }
     }
   </style>
