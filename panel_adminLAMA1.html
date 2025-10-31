@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Admin - Mall Nusantara</title>
+
+  <script type="module">
+    if (!localStorage.getItem("poiTaxiUser")) {
+      window.location.href = "login.html";
+    }
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyArjIuAyCRw85LStoiJzgIdLyhs8HXPFhs",
+      authDomain: "poi-taxi.firebaseapp.com",
+      databaseURL: "https://poi-taxi-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "poi-taxi",
+      storageBucket: "poi-taxi.firebasestorage.app",
+      messagingSenderId: "774582687333",
+      appId: "1:774582687333:web:ee95e1e3e705beaee4d88c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const aktifBody = document.getElementById("tabelAktif");
+    const bufferBody = document.getElementById("tabelBuffer");
+
+    const antrianRef = ref(db, "antrian");
+
+    const WHATSAPP_TOKEN = "EAAUzJvcgTvwBP4MgkCHstWa8iZB8AyxgyAjUIEdVtAbLKWx3BP3ik5wBofGaO3YGWZC0Uqo9O4KngKfwblY4WYosMih2513mkn82mir8OZAXeCX8T1npg3tDiZAIFunhkY9SGekZCtZCAN29zE2dRne808pl3l2O85xGarHvVgbZCv3TMtNCuX55ADgKAxbAgZDZD";
+    const PHONE_NUMBER_ID = "905097019346311";
+
+    async function kirimPesan(nomor, teks) {
+      await fetch(`https://graph.facebook.com/v19.0/${PHONE_NUMBER_ID}/messages`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${WHATSAPP_TOKEN}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          messaging_product: "whatsapp",
+          to: nomor,
+          text: { body: teks }
+        })
+      });
+    }
+
+    onValue(antrianRef, (snapshot) => {
+      const data = snapshot.val();
+      aktifBody.innerHTML = "";
+      bufferBody.innerHTML = "";
+
+      if (!data) {
+        aktifBody.innerHTML = "<tr><td colspan='5'>🚕 Tidak ada antrian aktif</td></tr>";
+        bufferBody.innerHTML = "<tr><td colspan='5'>🕒 Tidak ada buffer</td></tr>";
+        return;
+      }
+
+      const arr = Object.entries(data).sort((a, b) => new Date(a[1].createdAt) - new Date(b[1].createdAt));
+      const aktif = arr.filter(([_, v]) => v.status === "aktif");
+      const buffer = arr.filter(([_, v]) => v.status === "buffer");
+
+      aktif.forEach(([key, v], i) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${i + 1}</td>
+          <td>${v.noPolisi}</td>
+          <td>${v.noLambung}</td>
+          <td>${v.status}</td>
+          <td>
+            <button class="selesai" data-id="${key}">✅ Selesai</button>
+          </td>`;
+        aktifBody.appendChild(row);
+      });
+
+      buffer.forEach(([key, v], i) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${aktif.length + i + 1}</td>
+          <td>${v.noPolisi}</td>
+          <td>${v.noLambung}</td>
+          <td>${v.status}</td>
+          <td>
+            <button class="naik" data-id="${key}">⬆️ Naik ke Lobby</button>
+          </td>`;
+        bufferBody.appendChild(row);
+      });
+
+      document.querySelectorAll(".selesai").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+          const id = e.target.getAttribute("data-id");
+          await remove(ref(db, `antrian/${id}`));
+          if (buffer.length > 0) {
+            const [naikKey, naikData] = buffer[0];
+            await update(ref(db, `antrian/${naikKey}`), { status: "aktif" });
+            await kirimPesan(naikData.nomor, `🚕 ${naikData.noPolisi} | ${naikData.noLambung}\nSilakan masuk Lobby Veteran Mall Nusantara.\nGiliran Anda berikutnya.`);
+          }
+        });
+      });
+
+      document.querySelectorAll(".naik").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+          const id = e.target.getAttribute("data-id");
+          const data = buffer.find(([k]) => k === id)[1];
+          await update(ref(db, `antrian/${id}`), { status: "aktif" });
+          await kirimPesan(data.nomor, `🚕 ${data.noPolisi} | ${data.noLambung}\nSilakan masuk Lobby Veteran Mall Nusantara.\nGiliran Anda berikutnya.`);
+        });
+      });
+    });
+  </script>
+
+  <style>
+    body { font-family: "Poppins", sans-serif; background: #f2f4f7; padding: 20px; }
+    h1, h2 { text-align: center; margin-bottom: 10px; }
+    table {
+      width: 100%; border-collapse: collapse; background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 10px;
+      margin-top: 10px;
+    }
+    th, td { padding: 8px; border: 1px solid #ddd; text-align: center; font-size: 0.9em; }
+    th { background: #007bff; color: white; }
+    button { border: none; border-radius: 5px; padding: 5px 8px; cursor: pointer; }
+    .naik { background: #17a2b8; color: white; }
+    .selesai { background: #28a745; color: white; }
+  </style>
+</head>
+
+<body>
+  <h1>🏢 ANTRIAN Mall Nusantara</h1>
+  <h2>🚖 3 Unit di Lobby Veteran (Status Aktif)</h2>
+  <table>
+    <thead>
+      <tr><th>No</th><th>No Polisi</th><th>No Lambung</th><th>Status</th><th>Aksi</th></tr>
+    </thead>
+    <tbody id="tabelAktif"><tr><td colspan="5">Memuat data...</td></tr></tbody>
+  </table>
+
+  <h2 style="margin-top:20px;">🕒 Buffer (Menunggu)</h2>
+  <table>
+    <thead>
+      <tr><th>No</th><th>No Polisi</th><th>No Lambung</th><th>Status</th><th>Aksi</th></tr>
+    </thead>
+    <tbody id="tabelBuffer"><tr><td colspan="5">Memuat data...</td></tr></tbody>
+  </table>
+</body>
+</html>
