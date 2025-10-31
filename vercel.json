@@ -1,9 +1,13 @@
 {
   "version": 2,
   "builds": [
-    { "src": "**/*.html", "use": "@vercel/static" }
+    { "src": "index.js", "use": "@vercel/node" },
+    { "src": "login.html", "use": "@vercel/static" },
+    { "src": "panel_admin.html", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/$1" }
+    { "src": "/login.html", "dest": "/login.html" },
+    { "src": "/panel_admin.html", "dest": "/panel_admin.html" },
+    { "src": "/(.*)", "dest": "/index.js" }
   ]
 }

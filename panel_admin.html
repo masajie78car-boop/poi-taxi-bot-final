@@ -1,60 +1,249 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mall Nusantara — Panel Admin</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Admin - Mall Nusantara</title>
+
   <style>
-    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;background:#f6f9fb;color:#041;line-height:1.4}
-    header{background:#0369a1;color:white;padding:18px 20px;border-radius:0 0 12px 12px}
-    main{padding:20px;max-width:1100px;margin:20px auto}
-    .card{background:white;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(2,6,23,0.06);margin-bottom:12px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-    .unit{padding:12px;border-radius:8px;border:1px dashed #e6eef8}
-    .meta{font-size:12px;color:#6b7280}
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #f5f7fb;
+      color: #333;
+    }
+
+    header {
+      background: #007bff;
+      color: white;
+      padding: 16px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .logout {
+      position: absolute;
+      right: 16px;
+      top: 12px;
+      background: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .logout:hover {
+      background: #a71d2a;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 24px auto;
+      padding: 16px;
+    }
+
+    .section {
+      background: #fff;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #007bff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #e5e8ee;
+      text-align: center;
+    }
+
+    th {
+      background: #f1f5fb;
+      color: #444;
+    }
+
+    button.action {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-selesai {
+      background: #28a745;
+    }
+
+    .btn-naik {
+      background: #17a2b8;
+    }
+
+    .empty {
+      color: #888;
+      font-style: italic;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 18px;
+      }
+      .logout {
+        padding: 6px 10px;
+        font-size: 13px;
+      }
+      th, td {
+        font-size: 13px;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>Mall Nusantara — Panel Admin</h1>
-    <div style="font-size:13px;margin-top:6px">User: <strong id="userEmail">-</strong></div>
+    <h1>🚖 Panel Admin - Mall Nusantara</h1>
+    <button class="logout" onclick="logout()">Logout</button>
   </header>
+
   <main>
-    <div class="card">
-      <h2>Ringkasan POI</h2>
-      <p class="meta">Tampilan demo — tambahkan data dinamis sesuai kebutuhan</p>
-      <div class="grid" id="poiGrid">
-        <!-- contoh unit -->
-      </div>
+    <div class="section">
+      <h2>Antrian Aktif (Lobby)</h2>
+      <table id="tableAktif">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>No Polisi</th>
+            <th>No Lambung</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="5" class="empty">Memuat data...</td></tr>
+        </tbody>
+      </table>
     </div>
 
-    <div class="card">
-      <h3>Kontrol Cepat</h3>
-      <p class="meta">Aksi: refresh status unit, perbarui lokasi, lihat log</p>
-      <button onclick="alert('Simulasi: refresh status')">Refresh Status</button>
+    <div class="section">
+      <h2>Buffer (Menunggu)</h2>
+      <table id="tableBuffer">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>No Polisi</th>
+            <th>No Lambung</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="5" class="empty">Memuat data...</td></tr>
+        </tbody>
+      </table>
     </div>
   </main>
 
-  <script>
-    const units = [
-      { id: 'MN-01', name: 'Titik Jemput Lantai 1', status: 'Tersedia' },
-      { id: 'MN-02', name: 'Titik Jemput Lantai 2', status: 'Sibuk' },
-      { id: 'MN-03', name: 'Parkir VIP', status: 'Tersedia' },
-      { id: 'MN-04', name: 'Dropoff Utama', status: 'Dalam Perjalanan' },
-    ];
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-    const grid = document.getElementById('poiGrid');
-    units.forEach(u => {
-      const el = document.createElement('div');
-      el.className = 'unit';
-      el.innerHTML = `<strong>${u.id}</strong><div>${u.name}</div><div class="meta">Status: ${u.status}</div>`;
-      grid.appendChild(el);
+    // ==== Konfigurasi Firebase ====
+    const firebaseConfig = {
+      apiKey: "AIzaSyArjIuAyCRw85LStoiJzgIdLyhs8HXPFhs",
+      authDomain: "poi-taxi.firebaseapp.com",
+      databaseURL: "https://poi-taxi-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "poi-taxi",
+      storageBucket: "poi-taxi.firebasestorage.app",
+      messagingSenderId: "774582687333",
+      appId: "1:774582687333:web:ee95e1e3e705beaee4d88c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    const lokasi = "mall_nusantara"; // hanya mall ini yang ditampilkan
+
+    // 🔒 Cek login
+    onAuthStateChanged(auth, (user) => {
+      if (!user) window.location.href = "login.html";
     });
 
-    // show user email from query param
-    const params = new URLSearchParams(location.search);
-    const u = params.get('u') || 'masajie78car@gmail.com';
-    document.getElementById('userEmail').textContent = u;
+    // Tombol logout
+    window.logout = async function() {
+      await signOut(auth);
+      window.location.href = "login.html";
+    };
+
+    const aktifTable = document.querySelector("#tableAktif tbody");
+    const bufferTable = document.querySelector("#tableBuffer tbody");
+
+    // 🔁 Update realtime antrian
+    onValue(ref(db, `pangkalan/${lokasi}/antrian`), (snap) => {
+      const data = snap.val() || {};
+      const arr = Object.values(data);
+      const aktif = arr.filter(d => d.status === "aktif").sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
+      const buffer = arr.filter(d => d.status === "buffer").sort((a,b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+      // render tabel aktif
+      aktifTable.innerHTML = aktif.length ? "" : "<tr><td colspan='5' class='empty'>Belum ada antrian aktif</td></tr>";
+      aktif.forEach((d, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td>${d.noPolisi}</td>
+          <td>${d.noLambung}</td>
+          <td>${d.status}</td>
+          <td><button class="action btn-selesai" data-id="${d.noPolisi}">Selesai</button></td>`;
+        aktifTable.appendChild(tr);
+      });
+
+      // render tabel buffer
+      bufferTable.innerHTML = buffer.length ? "" : "<tr><td colspan='5' class='empty'>Belum ada buffer</td></tr>";
+      buffer.forEach((d, i) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${i + 1}</td>
+          <td>${d.noPolisi}</td>
+          <td>${d.noLambung}</td>
+          <td>${d.status}</td>
+          <td><button class="action btn-naik" data-id="${d.noPolisi}">Naik ke Lobby</button></td>`;
+        bufferTable.appendChild(tr);
+      });
+
+      // tombol aksi
+      document.querySelectorAll(".btn-selesai").forEach(btn =>
+        btn.addEventListener("click", async e => {
+          const id = e.target.dataset.id;
+          await remove(ref(db, `pangkalan/${lokasi}/antrian/${id}`));
+        })
+      );
+
+      document.querySelectorAll(".btn-naik").forEach(btn =>
+        btn.addEventListener("click", async e => {
+          const id = e.target.dataset.id;
+          await update(ref(db, `pangkalan/${lokasi}/antrian/${id}`), { status: "aktif" });
+        })
+      );
+    });
   </script>
 </body>
 </html>
