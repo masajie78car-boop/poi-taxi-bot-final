@@ -1,53 +1,20 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>POI Taxi Login</title>
-<style>
-body {
-margin: 0;
-padding: 0;
-font-family: "Poppins", sans-serif;
-background: url("https://raw.githubusercontent.com/masajie78car-boop/background-/main/33a70f49-banner-id-greensm-1-576x1024.jpeg") no-repeat center center fixed;
-background-size: cover;
-display: flex;
-justify-content: center;
-align-items: flex-end;
-height: 100vh;
-overflow: hidden;
-}
-.login-button {
-background-color: rgba(0, 123, 255, 0.9);
-color: white;
-border: none;
-font-size: 1.5em;
-padding: 15px 40px;
-border-radius: 50px;
-cursor: pointer;
-box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-transition: 0.3s;
-animation: pulse 2s infinite;
-margin-bottom: 40px;
-}
-.login-button:hover {
-background-color: #0056b3;
-transform: scale(1.05);
-}
-@keyframes pulse {
-0% { box-shadow: 0 0 0 0 rgba(0,123,255,0.6); }
-70% { box-shadow: 0 0 0 20px rgba(0,123,255,0); }
-100% { box-shadow: 0 0 0 0 rgba(0,123,255,0); }
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>POI TAXI - Home</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; padding:0; display:flex; align-items:center; justify-content:center; height:100vh; background:linear-gradient(135deg,#0f172a 0%, #001e3c 100%); color:#fff;}
+    .card { background: rgba(255,255,255,0.04); padding:28px; border-radius:12px; width:min(720px,92%); box-shadow:0 6px 30px rgba(2,6,23,0.6); }
+    a.button { display:inline-block; margin-top:12px; padding:10px 16px; background:#06b6d4; color:#042; border-radius:8px; text-decoration:none; font-weight:600; }
+  </style>
 </head>
 <body>
-<button class="login-button" onclick="goLogin()">LOGIN</button>
-<script>
-function goLogin() {
-window.location.href = "login.html";
-}
-</script>
+  <div class="card">
+    <h1>POI TAXI MULTI-LOKASI</h1>
+    <p>Selamat datang — gunakan tombol di bawah untuk pergi ke halaman login.</p>
+    <a class="button" href="login.html">Masuk ke Login</a>
+  </div>
 </body>
 </html>

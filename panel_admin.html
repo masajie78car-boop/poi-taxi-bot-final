@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mall Nusantara — Panel Admin</title>
+  <style>
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial;margin:0;background:#f6f9fb;color:#041;line-height:1.4}
+    header{background:#0369a1;color:white;padding:18px 20px;border-radius:0 0 12px 12px}
+    main{padding:20px;max-width:1100px;margin:20px auto}
+    .card{background:white;padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(2,6,23,0.06);margin-bottom:12px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .unit{padding:12px;border-radius:8px;border:1px dashed #e6eef8}
+    .meta{font-size:12px;color:#6b7280}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Mall Nusantara — Panel Admin</h1>
+    <div style="font-size:13px;margin-top:6px">User: <strong id="userEmail">-</strong></div>
+  </header>
+  <main>
+    <div class="card">
+      <h2>Ringkasan POI</h2>
+      <p class="meta">Tampilan demo — tambahkan data dinamis sesuai kebutuhan</p>
+      <div class="grid" id="poiGrid">
+        <!-- contoh unit -->
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Kontrol Cepat</h3>
+      <p class="meta">Aksi: refresh status unit, perbarui lokasi, lihat log</p>
+      <button onclick="alert('Simulasi: refresh status')">Refresh Status</button>
+    </div>
+  </main>
+
+  <script>
+    const units = [
+      { id: 'MN-01', name: 'Titik Jemput Lantai 1', status: 'Tersedia' },
+      { id: 'MN-02', name: 'Titik Jemput Lantai 2', status: 'Sibuk' },
+      { id: 'MN-03', name: 'Parkir VIP', status: 'Tersedia' },
+      { id: 'MN-04', name: 'Dropoff Utama', status: 'Dalam Perjalanan' },
+    ];
+
+    const grid = document.getElementById('poiGrid');
+    units.forEach(u => {
+      const el = document.createElement('div');
+      el.className = 'unit';
+      el.innerHTML = `<strong>${u.id}</strong><div>${u.name}</div><div class="meta">Status: ${u.status}</div>`;
+      grid.appendChild(el);
+    });
+
+    // show user email from query param
+    const params = new URLSearchParams(location.search);
+    const u = params.get('u') || 'masajie78car@gmail.com';
+    document.getElementById('userEmail').textContent = u;
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "poi-taxi-multi-lokasi",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "serve -s ."
+  },
+  "dependencies": {}
+}
