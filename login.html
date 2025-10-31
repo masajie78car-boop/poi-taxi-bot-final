@@ -1,118 +1,34 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login Admin</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: "Poppins", sans-serif;
-      background: url("https://github.com/masajie78car-boop/background-") no-repeat center center fixed;
+      background: url("https://raw.githubusercontent.com/masajie78car-boop/background-/main/bg-picsay%20(1)-picsay.png") no-repeat center center fixed;
       background-size: cover;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100vh;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end; /* posisi di bawah */
+      align-items: center;
     }
 
+    /* Tombol LOGIN */
     .login-button {
-      background-color: rgba(0, 123, 255, 0.9);
+      background-color: rgba(0, 123, 255, 0.95);
       color: white;
       border: none;
-      font-size: 1.5em;
+      font-size: 1.3em;
       padding: 15px 40px;
       border-radius: 50px;
       cursor: pointer;
+      margin-bottom: 50px; /* jarak dari bawah */
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       transition: 0.3s;
-      animation: pulse 2s infinite;
-    }
-
-    .login-button:hover {
-      background-color: #0056b3;
-      transform: scale(1.05);
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(0,123,255,0.6); }
-      70% { box-shadow: 0 0 0 20px rgba(0,123,255,0); }
-      100% { box-shadow: 0 0 0 0 rgba(0,123,255,0); }
-    }
-
-    .login-box {
-      display: none;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 30px;
-      border-radius: 20px;
-      text-align: center;
-      width: 320px;
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-      animation: fadeIn 0.5s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-  
-  </style>
-</head>
-<body>
-
-  <!-- Tombol awal -->
-  <button class="login-button" id="openLogin">LOGIN</button>
-
-  <!-- Kotak Login -->
-  <div class="login-box" id="loginBox">
-    <h2>🔐 Login Admin</h2>
-    <input type="email" id="email" placeholder="Email" value="masajie78car@gmail.com" />
-    <input type="password" id="password" placeholder="Password" />
-    <button id="loginBtn">Masuk</button>
-  </div>
-
-  <script type="module">
-    // Tampilkan form login saat tombol ditekan
-    const openLogin = document.getElementById("openLogin");
-    const loginBox = document.getElementById("loginBox");
-
-    openLogin.addEventListener("click", () => {
-      openLogin.style.display = "none";
-      loginBox.style.display = "block";
-    });
-
-    // Firebase login
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyArjIuAyCRw85LStoiJzgIdLyhs8HXPFhs",
-      authDomain: "poi-taxi.firebaseapp.com",
-      databaseURL: "https://poi-taxi-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "poi-taxi",
-      storageBucket: "poitaxi.firebasestorage.app",
-      messagingSenderId: "774582687333",
-      appId: "1:774582687333:web:ee95e1e3e705beaee4d88c"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    const loginBtn = document.getElementById("loginBtn");
-    loginBtn.addEventListener("click", () => {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          alert("Login berhasil!");
-          window.location.href = "panel_admin.html";
-        })
-        .catch((error) => {
-          alert("Login gagal: " + error.message);
-        });
-    });
-  </script>
-
-</body>
-</html>
+      animation
