@@ -1,59 +1,54 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel Admin - Stasiun Jatinegara</title>
-
   <style>
     body {
       margin: 0;
       font-family: "Poppins", sans-serif;
-      background: #f6f8fb;
+      background: #f5f7fb;
       color: #333;
     }
 
     header {
       background: #007bff;
       color: white;
+      padding: 16px;
       text-align: center;
-      padding: 14px 0;
-      font-size: 20px;
-      font-weight: 600;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-      margin-bottom: 5px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     }
 
     main {
       max-width: 960px;
-      margin: 0 auto;
-      padding: 0 16px;
+      margin: 24px auto;
+      padding: 16px;
     }
 
     .section {
       background: #fff;
       padding: 16px;
       border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-      margin-bottom: 10px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 24px;
     }
 
     h2 {
-      margin: 0 0 10px 0;
+      margin-top: 0;
       color: #007bff;
-      font-size: 18px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 10px;
     }
 
     th, td {
       padding: 8px;
       border: 1px solid #e5e8ee;
       text-align: center;
-      font-size: 14px;
     }
 
     th {
@@ -67,7 +62,7 @@
       border-radius: 6px;
       color: white;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .btn-selesai {
@@ -83,7 +78,6 @@
       font-style: italic;
     }
 
-    /* Tombol Logout (seperti tombol Login) */
     .logout {
       position: fixed;
       bottom: 40px;
@@ -92,8 +86,8 @@
       background-color: rgba(0, 123, 255, 0.95);
       color: white;
       border: none;
-      font-size: 1.1em;
-      padding: 14px 50px;
+      font-size: 1.2em;
+      padding: 16px 50px;
       border-radius: 50px;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
@@ -102,34 +96,32 @@
       z-index: 999;
     }
 
-    .logout:hover {
-      background-color: #0056b3;
-      transform: translateX(-50%) scale(1.05);
-    }
-
     @keyframes pulse {
       0% { box-shadow: 0 0 0 0 rgba(0,123,255,0.6); }
       70% { box-shadow: 0 0 0 20px rgba(0,123,255,0); }
       100% { box-shadow: 0 0 0 0 rgba(0,123,255,0); }
     }
 
+    .logout:hover {
+      background-color: #0056b3;
+      transform: translateX(-50%) scale(1.05);
+    }
+
     @media (max-width: 600px) {
-      th, td { font-size: 12px; }
-      .logout {
-        bottom: 25px;
-        padding: 10px 40px;
-        font-size: 1rem;
-      }
+      th, td { font-size: 13px; }
+      .logout { font-size: 14px; padding: 10px 30px; }
     }
   </style>
 </head>
 <body>
-
-  <header>🚉 Panel Admin - Stasiun Jatinegara</header>
+  <header>
+    <h1>🚆 Panel Admin - Stasiun Jatinegara</h1>
+  </header>
 
   <main>
     <div class="section">
-      <h2>Antrian Parkir Dalam (Aktif)</h2>
+      <h2>🚖 Antrian Parkir Dalam (Aktif)</h2>
+      <p><i>Maksimal 6 unit di dalam parkiran</i></p>
       <table id="tableAktif">
         <thead>
           <tr>
@@ -147,7 +139,7 @@
     </div>
 
     <div class="section">
-      <h2>Buffer (Menunggu di Luar Area)</h2>
+      <h2>🕒 Buffer (Menunggu di luar area)</h2>
       <table id="tableBuffer">
         <thead>
           <tr>
@@ -159,20 +151,19 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td colspan="5" class="empty">Memuat data...</td></tr>
+          <tr><td colspan="5" class="empty">Belum ada buffer</td></tr>
         </tbody>
       </table>
     </div>
   </main>
 
-  <button class="logout" onclick="showLogoutOptions()">LOGOUT</button>
+  <button class="logout" onclick="logout()">LOGOUT</button>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-    import { getDatabase, ref, onValue, update, remove, set, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+    import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-    // 🔥 Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyArjIuAyCRw85LStoiJzgIdLyhs8HXPFhs",
       authDomain: "poi-taxi.firebaseapp.com",
@@ -187,22 +178,28 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    const lokasi = "stasiun_jatinegara";
-    const aktifTable = document.querySelector("#tableAktif tbody");
-    const bufferTable = document.querySelector("#tableBuffer tbody");
+    const lokasi = "stasiun_jatinegara"; // lokasi unik
+    const maxAktif = 6;
 
-    // 🔐 Pastikan hanya admin yang login
     onAuthStateChanged(auth, (user) => {
       if (!user) window.location.href = "login.html";
     });
 
-    // 🧩 Render Antrian
-    function renderAntrian(data) {
-      const arr = Object.values(data || {});
-      const aktif = arr.filter(d => d.status === "aktif").slice(0,6);
-      const buffer = arr.filter(d => d.status === "menunggu");
+    window.logout = async function() {
+      await signOut(auth);
+      window.location.href = "login.html";
+    };
 
-      // Aktif
+    const aktifTable = document.querySelector("#tableAktif tbody");
+    const bufferTable = document.querySelector("#tableBuffer tbody");
+
+    onValue(ref(db, `pangkalan/${lokasi}/antrian`), (snap) => {
+      const data = snap.val() || {};
+      const arr = Object.values(data);
+      const aktif = arr.filter(d => d.status === "aktif").slice(0, maxAktif);
+      const buffer = arr.filter(d => d.status !== "aktif");
+
+      // render aktif
       aktifTable.innerHTML = aktif.length ? "" : "<tr><td colspan='5' class='empty'>Belum ada antrian aktif</td></tr>";
       aktif.forEach((d, i) => {
         const tr = document.createElement("tr");
@@ -215,7 +212,7 @@
         aktifTable.appendChild(tr);
       });
 
-      // Buffer
+      // render buffer
       bufferTable.innerHTML = buffer.length ? "" : "<tr><td colspan='5' class='empty'>Belum ada buffer</td></tr>";
       buffer.forEach((d, i) => {
         const tr = document.createElement("tr");
@@ -228,7 +225,6 @@
         bufferTable.appendChild(tr);
       });
 
-      // Tombol aksi
       document.querySelectorAll(".btn-selesai").forEach(btn =>
         btn.addEventListener("click", async e => {
           const id = e.target.dataset.id;
@@ -242,22 +238,7 @@
           await update(ref(db, `pangkalan/${lokasi}/antrian/${id}`), { status: "aktif" });
         })
       );
-    }
-
-    // 🔁 Update Realtime
-    onValue(ref(db, `pangkalan/${lokasi}/antrian`), (snap) => {
-      renderAntrian(snap.val());
     });
-
-    // ⚙️ Logout dengan pilihan Manual / Auto
-    window.showLogoutOptions = async function() {
-      const pilihan = confirm("Pilih OK untuk Mode AUTO, Cancel untuk Mode MANUAL sebelum logout.");
-      const mode = pilihan ? "auto" : "manual";
-      await set(ref(db, `pangkalan/${lokasi}/mode`), mode);
-      await signOut(auth);
-      alert(`Sistem diset ke mode: ${mode.toUpperCase()}`);
-      window.location.href = "login.html";
-    };
   </script>
 </body>
 </html>
